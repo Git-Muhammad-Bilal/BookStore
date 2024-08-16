@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Popover, Avatar, Button, Typography, List, ListItem, ListItemText, Divider, InputLabel } from '@mui/material';
 import axiosApi from '../../axiosApi/AxiosApi';
 import { Try } from '@mui/icons-material';
+import url from '../../url';
 
 export default function Profile({isWideScreen}) {
   const [anchorEl, setAnchorEl] = useState(null);
