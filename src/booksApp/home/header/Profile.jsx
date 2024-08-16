@@ -75,7 +75,7 @@ export default function Profile({isWideScreen}) {
   return (
     <>
       <Button aria-describedby={id} onClick={handleClick}>
-        <Avatar sx={{width:!isWideScreen?'35px': '40px'}} alt="User Name" src={profileName && `http://localhost:3001/${profileName}` } />
+        <Avatar sx={{width:!isWideScreen?'35px': '40px'}} alt="User Name" src={profileName && `${url}${profileName}` } />
       </Button>
       <Popover
         id={id}
@@ -93,7 +93,7 @@ export default function Profile({isWideScreen}) {
       >
         <Typography sx={{ p: 2, textAlign: 'center' }}>
           <InputLabel htmlFor="store-profile">
-            <Avatar alt="User Name" src={profileFile ? URL.createObjectURL(profileFile) : `http://localhost:3001/${profileName} `} sx={{ width: 100, height: 100, margin: '0 auto' }} />
+            <Avatar alt="User Name" src={profileFile ? URL.createObjectURL(profileFile) : `${url}${profileName} `} sx={{ width: 100, height: 100, margin: '0 auto' }} />
           </InputLabel>
 
           <input
