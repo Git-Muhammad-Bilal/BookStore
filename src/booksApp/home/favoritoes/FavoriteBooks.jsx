@@ -15,8 +15,8 @@ const StyledButton = styled(Button)(({ theme }) => ({
 
     },
     '&:hover': {
-        backgroundColor: 'initial', // Prevent background color change
-        color: 'inherit', // Prevent text color change
+        backgroundColor: 'initial', 
+        color: 'inherit', 
     },
 
     fontSize: 12,

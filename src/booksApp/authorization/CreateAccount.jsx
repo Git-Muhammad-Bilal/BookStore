@@ -43,7 +43,6 @@ export default function CreateAccount() {
     }
 
     const submitUser = async (data) => {
-        console.log(data, 'data,');
 
         let d = await axiosApi.post('createUser', {
             ...data,

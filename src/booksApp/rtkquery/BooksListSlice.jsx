@@ -20,13 +20,13 @@ export const BooksListSlice = createApi({
 
     endpoints: (builder) => ({
         fetchBooksLIst: builder.query({
-            query: ([page, subject]) => `getBooks?subject=${subject || 'fiction'}&limit=${Number(page || 1) * 8}&page=${page || 1}`,
+            query: ([page, subject]) => `${url}getBooks?subject=${subject || 'fiction'}&limit=${Number(page || 1) * 8}&page=${page || 1}`,
         }),
 
          
 
         fetchBooksForAutoComplete: builder.query({
-            query: (value) => `serchBooks?title=${value}&page=${1}&limit=${20}`,
+            query: (value) => `${url}serchBooks?title=${value}&page=${1}&limit=${20}`,
 
         })
 
