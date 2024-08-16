@@ -1,15 +1,12 @@
-import { DeblurTwoTone } from '@mui/icons-material'
-import { createSlice } from '@reduxjs/toolkit'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { useSearchParams } from 'react-router-dom'
-// let url = 'https://openlibrary.org/search.json'
-let url = 'http://localhost:3001/'
+import url from '../url'
+
 
 
 export const BooksListSlice = createApi({
     reducerPath: 'BooksListSlice',
     baseQuery: fetchBaseQuery({
-        baseUr: 'http://localhost:3001/',
+        baseUr: url,
 
         prepareHeaders: (headers) => {
             let token = localStorage.getItem('jwtToken')
@@ -23,19 +20,13 @@ export const BooksListSlice = createApi({
 
     endpoints: (builder) => ({
         fetchBooksLIst: builder.query({
-
-            query: ([page, subject]) => {
-                return `http://localhost:3001/getBooks?subject=${subject || 'fiction'}&limit=${Number(page || 1) * 8}&page=${page || 1}`
-            },
+            query: ([page, subject]) => `getBooks?subject=${subject || 'fiction'}&limit=${Number(page || 1) * 8}&page=${page || 1}`,
         }),
 
-
+         
 
         fetchBooksForAutoComplete: builder.query({
-            query: (value) => {
-
-                return `http://localhost:3001/serchBooks?title=${value}&page=${1}&limit=${20}`
-            },
+            query: (value) => `serchBooks?title=${value}&page=${1}&limit=${20}`,
 
         })
 

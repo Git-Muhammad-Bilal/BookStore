@@ -1,15 +1,14 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-// let url = 'https://openlibrary.org/search.json'
+import url from '../url';
 
-let url = 'http://localhost:3001/'
 
 export const FetchFavoriteBooksSliceSlice = createApi({
     reducerPath: 'FetchFavoriteBooksSliceSlice',
     baseQuery: fetchBaseQuery({
         baseUr: url,
-        
+
         prepareHeaders: (headers, { getState }) => {
-            
+
             let token = localStorage.getItem('jwtToken')
             if (token) {
                 headers.set('Authorization', `Bearer ${token}`);
@@ -23,42 +22,28 @@ export const FetchFavoriteBooksSliceSlice = createApi({
         createFavorite: builder.mutation({
             query: (newItem) => {
                 return {
-                    url: `http://localhost:3001/savefavorite`, // The endpoint to send the POST request to
+                    url: `savefavorite`,
                     method: 'POST',
-                    body: { bookId: newItem }, // The body of the POST request
+                    body: { bookId: newItem },
                 }
             },
-
             invalidatesTags: ['Post']
 
         }),
 
         getFavorites: builder.query({
 
-            query: () => {
-                return `http://localhost:3001/getFavorites`
-            },
-
-
-
+            query: () => `getFavorites`,
         }),
         fetchFavBooksList: builder.query({
 
-            query: (bookId) => {
-                return `http://localhost:3001/getBook/${bookId}`
-            },
+            query: (bookId) => `getBook/${bookId}`,
 
 
 
         }),
         fetchFavBooksAuthorNames: builder.query({
-
-            query: (data) => {
-                return `https://openlibrary.org${data?.authors[0]?.author?.key}.json`
-            },
-
-
-
+            query: (data) => `https://openlibrary.org${data?.authors[0]?.author?.key}.json`,
         }),
     })
 })

@@ -1,12 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axiosApi from '../axiosApi/AxiosApi';
 
-// Initial state for the counter slice
+
 const initialState = {
     favBooksList: []
 };
 
-// Create a counter slice
 const favBooksListSlice = createSlice({
     name: 'favBooksListSlice',
     initialState,
@@ -34,8 +33,6 @@ const favBooksListSlice = createSlice({
     },
 });
 
-// Export actions generated from the slice
 export const { addToFav, removeFromFav } = favBooksListSlice.actions;
 
-// Export the reducer function
 export default favBooksListSlice.reducer;
