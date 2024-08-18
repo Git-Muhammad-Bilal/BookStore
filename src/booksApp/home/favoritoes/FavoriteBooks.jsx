@@ -100,7 +100,6 @@ export default function FavoriteBooks() {
                     return b
                 }
             })
-            console.log(updatedBooks, page, 'books');
 
             dispatach(addFavoriteBooksWithPage({ [page]: updatedBooks }))
         }
@@ -136,7 +135,7 @@ export default function FavoriteBooks() {
                                         </Typography>
                                     </CardContent>
                                     <CardActions  >
-                                        <NavLink to='/BookToBuy/Book/123'>
+                                        <NavLink to={`/BookToBuy/Book/${bookId}`}>
                                             <Button sx={{ fontSize: 12 }} variant='contained' size="small" color='primary'>Buy</Button>
                                         </NavLink>
                                         <Button
