@@ -6,21 +6,23 @@ import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 import axios from 'axios';
 import axiosApi from '../../axiosApi/AxiosApi';
 import { useCreateFavoriteMutation, useLazyGetFavoritesQuery } from '../../rtkquery/FetchFavoriteBooksListSlice';
+import { addToCart } from '../../rtkquery/AddToCartToSlice';
+import { useDispatch, useSelector } from 'react-redux';
 let url = 'https://openlibrary.org'
 export default function Book({ bookId }) {
   const [book, setBook] = useState({});
   let { id } = useParams()
-  const [favorites, setFavorites] = useState([]) 
+  const [favorites, setFavorites] = useState([])
   let [createFavorite, { data: newSavedFavorites }] = useCreateFavoriteMutation()
   let [getFavorites, { data: favoritesList }] = useLazyGetFavoritesQuery()
-   
-
+  const dispatach = useDispatch()
+  const cartItems = useSelector(({ cartItems }) => cartItems.cartItems)
 
   useEffect(() => {
     const fetchBooks = async () => {
 
       let { data } = await axiosApi.get(`getBook/${bookId || id}`)
-      const {data:favs} = await getFavorites()
+      const { data: favs } = await getFavorites()
       setFavorites(favs)
       setBook(data)
 
@@ -29,15 +31,12 @@ export default function Book({ bookId }) {
     fetchBooks()
 
   }, [id])
-  
-
 
 
   async function handleNewFavorite(id) {
     let { data } = await createFavorite(bookId || id)
     setFavorites(data)
   }
-
 
   return (
     <Container sx={{ mt: '40px' }}>
@@ -51,6 +50,9 @@ export default function Book({ bookId }) {
 
           />
           <CardContent sx={{ width: 314 }} >
+            <Typography fontSize={17} gutterBottom variant="p"  >
+              {book.title}
+            </Typography>
             <Grid container spacing={2}>
               <Grid item xs={9}>
                 <Typography gutterBottom variant="p"  >
@@ -95,9 +97,15 @@ export default function Book({ bookId }) {
           </CardContent>
 
           <CardActions  >
-            <NavLink to='/BookToBuy/Book/123'>
-              <Button sx={{ width: 170 }} variant='contained' size="small" color='primary'>Add To Cart</Button>
-            </NavLink>
+            {
+
+              cartItems.find(item => item?.bookId === book?.bookId) ? <Button sx={{ width: 170 }} variant='contained' size="small" color='primary'> Added
+              </Button> :
+
+                <Button onClick={() => { dispatach(addToCart({ ...book, price: 7, cover_id: book?.img, bookId: id, quanity: 0 })) }}
+                  sx={{ width: 170 }} variant='contained' size="small" color='primary'>Add To Cart
+                </Button>
+            }
             <NavLink to={-1}>
               <Button variant='contained' size="small" color='primary'>Back</Button>
             </NavLink>

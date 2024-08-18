@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import url  from '../url';
+import {url}  from '../url';
 
 
 export const FetchFavoriteBooksSliceSlice = createApi({
@@ -12,7 +12,6 @@ export const FetchFavoriteBooksSliceSlice = createApi({
             if (token) {
                 headers.set('Authorization', `Bearer ${token}`);
             }
-            console.log('working');
             return headers;
         },
     }),

@@ -1,5 +1,5 @@
 import axios from "axios";
-import url from "../url";
+import {url} from "../url";
 
 const axiosApi = axios.create({
     baseURL: url
@@ -8,10 +8,11 @@ const axiosApi = axios.create({
 
 axiosApi.interceptors.request.use(function (config) {
     let token = localStorage.getItem('jwtToken');
+    
     if (token) {
         config.headers.Authorization =token && `bearer ${token}`
     }
-     
+       
     return config;
     
 }, function (error) {

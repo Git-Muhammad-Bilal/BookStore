@@ -24,7 +24,8 @@ export default function BooksList({ serchVal }) {
   let [fetchBooks, result] = useLazyFetchBooksLIstQuery()
   let [createFavorite, { data: newSavedFavorites }] = useCreateFavoriteMutation()
   let [getFavorites, { data: favoritesList }] = useLazyGetFavoritesQuery()
-
+  const cartItems = useSelector(({ cartItems }) => cartItems.cartItems)
+  
   let { data, error, isLoading } = result
   let page = searchParams.get('page');
   let priceCount = 0
@@ -77,7 +78,7 @@ export default function BooksList({ serchVal }) {
 
 
   function handleCartItems(book) {
-    dispatach(addToCart(book))
+      dispatach(addToCart(book))
   }
 
 
@@ -134,15 +135,26 @@ export default function BooksList({ serchVal }) {
                   </Stack>
                 </CardContent>
                 <CardActions>
-                  <Button
-                    sx={{ fontSize: 12 }}
+                 {
+                   cartItems.find(item=>item?.bookId === id) ? 
+                   <Button
+                   sx={{ fontSize: 12, padding:"4px 25px  4px 25px" }}
                     variant='contained'
+                    size="small"
+                    color='primary'
+                  >
+                    Added
+                  </Button>:
+                   <Button
+                   sx={{ fontSize: 12 }}
+                   variant='contained'
                     size="small"
                     color='primary'
                     onClick={() => { handleCartItems({ ...bookWdPrice, bookId: id, quanity: 0 }) }}
                   >
                     Add To Cart
                   </Button>
+                  }
                   <NavLink
                     to={`/BookToBuy/Book/${id}`}
                   >

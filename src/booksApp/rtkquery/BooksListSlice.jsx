@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import url from '../url'
+import{url}from '../url'
 
 
 

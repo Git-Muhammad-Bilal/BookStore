@@ -1,24 +1,30 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Popover, Avatar, Button, Typography, List, ListItem, ListItemText, Divider, InputLabel } from '@mui/material';
 import axiosApi from '../../axiosApi/AxiosApi';
-import { Try } from '@mui/icons-material';
-import url from '../../url';
+import {url} from '../../url';
 
-export default function Profile({isWideScreen}) {
+export default function Profile({ isWideScreen }) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [profileName, setProfileName] = useState('');
+  const [user, setUser] = useState({
+    name: '',
+    lastName: '',
+    email: '',
+    profileName: '',
+    profile: '',
+  });
   const [profileFile, setProfileFile] = useState();
   const fileInputRef = useRef()
 
+  const { name, lastName, email, profileName, profile } = user;
+
   const fetchProfile = async () => {
     let { data } = await axiosApi.get('getProfile')
-    setProfileName(data)
+    setUser({ ...data, profileName: data?.profile, profile: data.profile && `${url}${data.profile}` })
   }
 
   useEffect(() => {
     fetchProfile()
-
-  }, [profileName])
+  }, [])
 
 
   async function saveProfile() {
@@ -26,10 +32,13 @@ export default function Profile({isWideScreen}) {
     try {
       const formData = new FormData()
       formData.append('profile', profileFile)
-
+      
       let { data } = await axiosApi.post('uploadProfile', formData)
-      setProfileName(data)
+
+      setUser({ ...user, profileName: data, profile: data && `${url}${data}` })
+
       setAnchorEl(null)
+      setProfileFile('')
 
     } catch (error) {
       console.log(error.message, 'messgage');
@@ -45,8 +54,9 @@ export default function Profile({isWideScreen}) {
         profile: profileName
       })
       if (data) {
+        setUser({ ...user, profileName: '', profile: '' })
+
         setAnchorEl(null)
-        setProfileName("")
 
       }
     } catch (error) {
@@ -57,14 +67,12 @@ export default function Profile({isWideScreen}) {
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
-
   };
 
   const handleClose = () => {
     setAnchorEl(null);
-    !profileName && setProfileFile(null)
+    setProfileFile(null)
   };
-
 
   function handleFileChange(e) {
     setProfileFile(e.target.files[0])
@@ -76,13 +84,18 @@ export default function Profile({isWideScreen}) {
   return (
     <>
       <Button aria-describedby={id} onClick={handleClick}>
-        <Avatar sx={{width:!isWideScreen?'35px': '40px'}} alt="User Name" src={profileName && `${url}${profileName}` } />
+        <Avatar sx={{ width: !isWideScreen ? '35px' : '40px' }} alt={name} src={profile} />
       </Button>
       <Popover
         id={id}
         open={open}
         anchorEl={anchorEl}
         onClose={handleClose}
+        sx={{
+          '& .MuiPopover-paper': {
+            width: '200px',
+          },
+        }}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'right',
@@ -94,7 +107,7 @@ export default function Profile({isWideScreen}) {
       >
         <Typography sx={{ p: 2, textAlign: 'center' }}>
           <InputLabel htmlFor="store-profile">
-            <Avatar alt="User Name" src={profileFile ? URL.createObjectURL(profileFile) : `${url}${profileName} `} sx={{ width: 100, height: 100, margin: '0 auto' }} />
+            <Avatar alt={name} src={profileFile ? URL.createObjectURL(profileFile) : profile} sx={{ width: 100, height: 100, margin: '0 auto' }} />
           </InputLabel>
 
           <input
@@ -103,20 +116,18 @@ export default function Profile({isWideScreen}) {
             id="store-profile"
             accept='image/*'
             onChange={handleFileChange}
-            style={{ display: 'none' }} // Hide the actual file input
+            style={{ display: 'none' }}
           />
-
-
-          <Typography variant="h6">John Doe</Typography>
-          <Typography variant="body2" color="textSecondary">johndoe@example.com</Typography>
+          <Typography fontSize={14} variant="h6">{`${name} ${lastName}`}</Typography>
+          <Typography fontSize={14} variant="body2" color="textSecondary">{email}</Typography>
         </Typography>
         <Divider />
 
         <List component="nav" aria-label="profile settings">
-          <ListItem onClick={saveProfile} >
+          <ListItem onClick={() => profileFile && saveProfile()} >
             <ListItemText primary="Save" />
           </ListItem>
-          <ListItem onClick={removeProfile}>
+          <ListItem onClick={() => profileName && removeProfile()}>
             <ListItemText primary="Remove" />
           </ListItem>
         </List>

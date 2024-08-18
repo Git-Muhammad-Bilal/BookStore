@@ -4,10 +4,12 @@ import AuthLeftSide from '../authorization/AuthLeftSide'
 import { Stack } from '@mui/system'
 
 export default function AuthLayOut() {
-    return (
-        <Suspense fallback={'Loading'}>
+   const {pathname} = useLocation()
+   return (
+       <Suspense fallback={'Loading'}>
             <Stack display={'flex'} flexDirection={'row'}>
-                <AuthLeftSide />
+            {(pathname.includes('login') || pathname.includes('createAccount')) &&
+                <AuthLeftSide />}
                 <Outlet />
             </Stack>
         </Suspense >
