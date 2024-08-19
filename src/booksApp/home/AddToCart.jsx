@@ -72,7 +72,7 @@ export default function AddToCart() {
                             cartItems?.map((item) => {
                                 const { cover_id, title, authors, first_publish_year, price, quanity, bookId } = item
                                 return <Box mt={5} >
-                                    <Card sx={{ width: '300px', }}  >
+                                    <Card sx={{ width: '260px', }}  >
                                         <Stack direction="row" alignItems={'start'} >
                                             <Box>
                                                 <CardMedia

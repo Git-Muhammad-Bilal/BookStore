@@ -85,7 +85,7 @@ export default function Header({ setSerVal, setOpenLeftBar }) {
                 onClose={() => setOpenAddToCM(false)}
                 sx={{
                     '& .MuiDrawer-paper': {
-                        width: 370
+                        width:!isWideScreen?270: 330
                     },
                 }}
 
