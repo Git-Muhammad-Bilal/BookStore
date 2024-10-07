@@ -1,6 +1,8 @@
 import React from 'react'
 
 export default function AuthLeftSide() {
+  
+
   return (
     <div className='auth-left-side'>
       <div>

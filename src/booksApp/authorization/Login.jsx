@@ -7,6 +7,8 @@ import { loginFields } from './AuthFields';
 import * as yup from "yup"
 import '../styles/Login.css'
 import axiosApi from '../axiosApi/AxiosApi';
+import { Stack } from '@mui/system';
+import { Button } from '@mui/material';
 
 
 const schema = yup
@@ -25,36 +27,36 @@ export default function CreateAccount() {
     formState: { errors, isSubmitting },
   } = useForm({ resolver: yupResolver(schema) })
 
-  
-  
+
+
   const [showPass, setShowPass] = useState({
     password: false,
     confirmPassword: false
   })
 
   const navigate = useNavigate()
-  
-  
+
+
   let token = localStorage.getItem('jwtToken')
-  
+
   if (token) {
-    return <Navigate to={'/BookToBuy/List?page=1'}/>
-  }   
+    return <Navigate to={'/BookToBuy/List?page=1'} />
+  }
 
 
   const submitUser = async (user) => {
-    
-      let { data } = await axiosApi.post('getLogedInUser', {
-        email:user.email,
-        password:user.password.toString()
+
+    let { data } = await axiosApi.post('getLogedInUser', {
+      email: user.email,
+      password: user.password.toString()
+    })
+    if (data?.error) {
+      setError('root', {
+        message: data.error
       })
-        if (data?.error) {
-            setError('root', {
-                message: data.error
-            })
-        } else {
-            navigate(`/BookToBuy/List?page=1`)
-        }
+    } else {
+      navigate(`/BookToBuy/List?page=1`)
+    }
   }
 
   let inpFields = loginFields.map((inp, index) => {
@@ -83,20 +85,19 @@ export default function CreateAccount() {
       {errors[name] && <p style={{ color: 'red' }} className='required'>{errors[name]?.message} </p>}
     </div>
   })
-  
+
   return (
 
-    <div className='login-cont'>
-      <div className="or-crt-acnt">
+    <Stack display={'flex'} flexDirection={'column'}  justifyContent={'center'}>
+      <Stack pb={20}  display={'flex'} flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'} width={'90%'} pl={3}>
         <h3>
           Create your account
-
         </h3>
         <Link to='/createAccount'>
-          <button>Sign Up</button>
+          <Button variant='contained'>Sign Up</Button>
         </Link>
-      </div>
-      <div className="lgn-flds">
+      </Stack>
+      <Stack flex={1} display={'flex'} flexDirection={'column'} alignItems={'center'}  justifyContent={'center'}>
         <div className="heading">
           <h1>
             BooksTobuy!
@@ -112,8 +113,8 @@ export default function CreateAccount() {
         <div className='error'>
           {errors.root ? <h3 style={{ color: 'red' }}>{errors.root.message}</h3> : null}
         </div>
-      </div>
-    </div>
+      </Stack>
+    </Stack>
 
   )
 }

@@ -12,7 +12,7 @@ const PurhcasesHistory = lazy(() => import('../home/PurhcasesHistory'));
 
 export default function BookToBuy() {
   const [serVal, setSerVal] = useState()
-
+     
   return (
 
     <BrowserRouter>

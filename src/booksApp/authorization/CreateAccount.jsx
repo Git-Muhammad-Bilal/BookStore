@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import '../styles/Login.css'
-import { Container, Grid, Input } from '@mui/material';
+import { Button, Container, Grid, Input } from '@mui/material';
 import AuthLeftSide from './AuthLeftSide';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { Email, Password } from '@mui/icons-material';
@@ -9,6 +9,7 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import { createAccountFields } from './AuthFields';
 import axiosApi from '../axiosApi/AxiosApi';
+import { Stack } from '@mui/system';
 const schema = yup
     .object({
         name: yup.string().required(),
@@ -86,19 +87,19 @@ export default function CreateAccount() {
 
     return (
 
-        <div className='login-cont'>
-            <div className="or-crt-acnt">
+        <Stack display={'flex'} flexDirection={'column'} justifyContent={'center'}>
+            <Stack pb={10} display={'flex'} flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'} width={'90%'} pl={3}>
                 <h3>
                     already have an account
                 </h3>
                 <Link to='/login'>
-                    <button>Sign in</button>
+                    <Button variant='contained'>Sign in</Button>
                 </Link>
-            </div>
-            <div className="lgn-flds">
+            </Stack>
+            <Stack flex={1} display={'flex'}  flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
                 <div className="heading">
                     <h2>
-                        Help your self with the books
+                        Help yourself with the books
                         <br />
                         you found noewhere else!
                     </h2>
@@ -113,8 +114,8 @@ export default function CreateAccount() {
                 <div className='error'>
                     {errors.root ? <h3 style={{ color: 'red' }}>{errors.root.message}</h3> : null}
                 </div>
-            </div>
-        </div>
+            </Stack>
+        </Stack>
 
     )
 }
